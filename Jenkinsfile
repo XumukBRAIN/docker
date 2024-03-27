@@ -16,8 +16,6 @@ pipeline {
 
         stage('docker-compose start') {
             steps {
-                bat 'docker login'
-                bat 'docker update --cpu-shares 512 -m 300M dockerapi'
                 bat 'docker-compose up -d'
             }
         }
