@@ -18,7 +18,6 @@ pipeline {
         stage('clean container') {
             steps {
                 script {
-                    bat 'docker stop ${dockerContainerName}'
                     bat 'docker rm ${dockerContainerName}'
                     bat 'docker rmi ${dockerImageName}'
                 }
