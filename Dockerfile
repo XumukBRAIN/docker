@@ -3,7 +3,8 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 COPY pom.xml ./
 COPY .mvn .mvn
 COPY src src
-RUN ./mvnw package
+# Build the project and create the executable JAR
+RUN mvn clean compile install package
 
 FROM openjdk:17-jdk-slim
 WORKDIR demo
