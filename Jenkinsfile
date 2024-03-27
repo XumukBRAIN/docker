@@ -3,8 +3,6 @@ pipeline {
     environment {
         MAVEN_ARGS = " -e clean install"
         registry = ""
-        dockerContainerName = 'dockerapi'
-        dockerImageName = 'dockerapi-docker-app'
     }
     stages {
         stage('Build') {
@@ -18,8 +16,9 @@ pipeline {
         stage('clean container') {
             steps {
                 script {
-                    bat 'docker rm ${dockerContainerName}'
-                    bat 'docker rmi ${dockerImageName}'
+                    bat 'docker stop dockerapi'
+                    bat 'docker rm dockerapi'
+                    bat 'docker rmi dockerapi-docker-app'
                 }
             }
         }
