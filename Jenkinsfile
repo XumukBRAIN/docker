@@ -10,21 +10,26 @@ pipeline {
     stage('Build') {
        steps {
    withMaven(maven: 'MAVEN_ENV') {
-            bat'mvn clean compile'
+            bat'mvn clean compile package'
         }
        }
     }
 
- stage('clean container') {
+  stage('clean container') {
       steps {
-       bat 'docker ps -f name=${dockerContainerName} -q | xargs --no-run-if-empty docker container stop'
-       bat 'docker container ls -a -fname=${dockerContainerName} -q | xargs -r docker container rm'
-       bat 'docker images -q --filter=reference=${dockerImageName} | xargs --no-run-if-empty docker rmi -f'
+       script {
+           def containerId = sh(script: "docker ps -f name=${dockerContainerName} -q", returnStdout: true).trim()
+           if (containerId) {
+               sh "docker stop ${containerId}"
+               sh "docker rm ${containerId}"
+           }
+           sh "docker rmi ${dockerImageName}"
+       }
       }
     }
   stage('docker-compose start') {
       steps {
-       bat 'docker compose up -d'
+          bat 'docker-compose up -d'
       }
     }
   }
