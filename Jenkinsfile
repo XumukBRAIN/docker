@@ -15,19 +15,6 @@ pipeline {
             }
         }
 
-        stage('clean container') {
-            steps {
-                script {
-                    def containerId = bat(script: "docker ps -aqf name=${dockerContainerName}", returnStdout: true).trim()
-                    if (containerId) {
-                        bat "docker stop ${containerId}"
-                        bat "docker rm ${containerId}"
-                    }
-                    bat "docker rmi ${dockerImageName}"
-                }
-            }
-        }
-
         stage('docker-compose start') {
             steps {
                 bat 'docker-compose up -d'
