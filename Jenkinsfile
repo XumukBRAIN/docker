@@ -18,12 +18,12 @@ pipeline {
   stage('clean container') {
       steps {
        script {
-           def containerId = sh(script: "docker ps -f name=${dockerContainerName} -q", returnStdout: true).trim()
+           def containerId = bat(script: "docker ps -f name=${dockerContainerName} -q", returnStdout: true).trim()
            if (containerId) {
-               sh "docker stop ${containerId}"
-               sh "docker rm ${containerId}"
+               bat "docker stop ${containerId}"
+               bat "docker rm ${containerId}"
            }
-           sh "docker rmi ${dockerImageName}"
+           bat "docker rmi ${dockerImageName}"
        }
       }
     }
