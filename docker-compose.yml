@@ -1,28 +1,24 @@
 version: '3.8'
 
 services:
-  api:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+
+  docker-app:
     build: .
-    ports:
-      - '8090:8090'
-    container_name: dockerapi
+    container_name: docker-app
+    depends_on:
+      - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/docker
-      - SPRING_DATASOURCE_USERNAME=docker-user
-      - SPRING_DATASOURCE_PASSWORD=88888888
-    links:
-      - 'db:database'
-  db:
-    image: postgres:15.2
-    restart: always
-    environment:
-      POSTGRES_USER: docker-user
-      POSTGRES_PASSWORD: 88888888
-      POSTGRES_DB: docker
-    volumes:
-      - db-data:/var/lib/postgresql/data
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
     ports:
-      - 6432:5432
-volumes:
-  db-data:
-    driver: local
+      - "8080:8080"

@@ -1,19 +1,18 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/person_docker
-    username: postgres
-    password: xumuk
+  sql:
+    init:
+      mode: ALWAYS
+  application:
+    name: docker
   jpa:
     properties:
       hibernate:
         show_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        hbm2ddl:
-          auto: none
+        ddl-auto: update
     open-in-view: false
   mvc:
     pathmatch:

@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@RestController("/person")
+@RestController
+@RequestMapping("/person")
 @RequiredArgsConstructor
 public class PersonController {
 
