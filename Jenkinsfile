@@ -15,6 +15,16 @@ pipeline {
             }
         }
 
+        stage('clean container') {
+            steps {
+                script {
+                    bat 'docker stop ${dockerContainerName}'
+                    bat 'docker rm ${dockerContainerName}'
+                    bat 'docker rmi ${dockerContainerName}'
+                }
+            }
+        }
+
         stage('docker-compose start') {
             steps {
                 bat 'docker-compose up -d'
