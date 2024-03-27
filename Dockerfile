@@ -3,6 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
+RUN chmod +x mvnw  # Добавляем права на выполнение
 RUN ./mvnw dependency:resolve
 COPY src src
 RUN ./mvnw package
