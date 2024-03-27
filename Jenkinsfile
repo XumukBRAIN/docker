@@ -15,6 +15,16 @@ pipeline {
             }
         }
 
+        stage('clean container') {
+            steps {
+                script {
+                    bat 'docker ps -f name=${dockerContainerName} -q | xargs --no-run-if-empty docker container stop'
+                    bat 'docker container ls -a -fname=${dockerContainerName} -q | xargs -r docker container rm'
+                    bat 'docker images -q --filter=reference=${dockerImageName} | xargs --no-run-if-empty docker rmi -f'
+                }
+            }
+        }
+
         stage('docker-compose start') {
             steps {
                 bat 'docker-compose up -d'
